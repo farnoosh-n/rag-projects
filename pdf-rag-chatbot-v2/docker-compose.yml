@@ -1,0 +1,32 @@
+services:
+
+  backend:
+    build: ./backend
+    container_name: rag-backend
+    ports:
+      - "9000:8000"
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      - ollama
+
+
+  frontend:
+    build: ./frontend
+    container_name: rag-frontend
+    ports:
+      - "8600:8501"
+    depends_on:
+      - backend
+
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: rag-ollama
+    ports:
+      - "11434:11434"
+    volumes: 
+      - ollama_data:/root/.ollama
+    
+volumes:
+  ollama_data:
